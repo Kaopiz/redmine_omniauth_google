@@ -43,7 +43,9 @@ class RedmineOauthController < AccountController
       # Self-registration off
       redirect_to(home_url) && return unless Setting.self_registration?
       # Create on the fly
-      # user.firstname, user.lastname = info["name"].split(' ') unless info['name'].nil?
+      #user.firstname, user.lastname = info["name"].split(' ') unless info['name'].nil?
+      #split by last space, for Example: "Le Van Hoang" => ["Le Van", "Hoang"]
+      user.firstname, user.lastname = info["name"].split(/ (?=\S+$)/) unless info['name'].nil?
       user.firstname ||= info[:given_name]
       user.lastname ||= info[:family_name]
       user.mail = info["email"]
